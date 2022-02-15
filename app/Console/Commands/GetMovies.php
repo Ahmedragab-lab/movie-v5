@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Actor;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Console\Command;
@@ -41,39 +42,89 @@ class GetMovies extends Command
             // dd($response->json());
             foreach( $response->json()['results'] as $result){
                 $movie = Movie::where('e_id',$result['id'])->first();
-              if(!$movie){
-                $movie = Movie::create([
-                    'e_id'          => $result['id'],
-                    'title'         => $result['title'],
-                    'desc'          => $result['overview'],
-                    'poster'        => $result['poster_path'],
-                    'banner'        => $result['backdrop_path'],
-                    'release_date'  => $result['release_date'],
-                    'vote'          => $result['vote_average'],
-                    'vote_count'    => $result['vote_count'],
-                ]);
-              }else{
-                $movie->update([
-                    'e_id'          => $result['id'],
-                    'title'         => $result['title'],
-                    'desc'          => $result['overview'],
-                    'poster'        => $result['poster_path'],
-                    'banner'        => $result['backdrop_path'],
-                    'release_date'  => $result['release_date'],
-                    'vote'          => $result['vote_average'],
-                    'vote_count'    => $result['vote_count'],
-                ]);
-              }
-
-                foreach( $result['genre_ids'] as $genreId ){
-                    $genre = Genre::where('e_id',$genreId)->first();
-                    $movie->genres()->attach($genre->id);
-                }
+                        // if(!$movie){
+                        //     $movie = Movie::create([
+                        //         'e_id'          => $result['id'],
+                        //         'title'         => $result['title'],
+                        //         'desc'          => $result['overview'],
+                        //         'poster'        => $result['poster_path'],
+                        //         'banner'        => $result['backdrop_path'],
+                        //         'release_date'  => $result['release_date'],
+                        //         'vote'          => $result['vote_average'],
+                        //         'vote_count'    => $result['vote_count'],
+                        //     ]);
+                        // }else{
+                        //     $movie->update([
+                        //         'e_id'          => $result['id'],
+                        //         'title'         => $result['title'],
+                        //         'desc'          => $result['overview'],
+                        //         'poster'        => $result['poster_path'],
+                        //         'banner'        => $result['backdrop_path'],
+                        //         'release_date'  => $result['release_date'],
+                        //         'vote'          => $result['vote_average'],
+                        //         'vote_count'    => $result['vote_count'],
+                        //     ]);
+                        // }
+                        $movie = Movie::updateOrCreate(
+                            [
+                                'e_id' => $result['id'],
+                                'title' => $result['title'],
+                            ],
+                            [
+                                'desc' => $result['overview'],
+                                'poster' => $result['poster_path'],
+                                'banner' => $result['backdrop_path'],
+                                // 'type' => 'upcoming',
+                                'release_date' => $result['release_date'],
+                                'vote' => $result['vote_average'],
+                                'vote_count' => $result['vote_count'],
+                            ]);
+              $this->attachGenres($result, $movie);
+              $this->attachActors($movie);
             }
         }
     }
 
+    private function attachGenres($result, Movie $movie)
+    {
+        foreach ($result['genre_ids'] as $genreId) {
 
+            $genre = Genre::where('e_id', $genreId)->first();
+
+            $movie->genres()->syncWithoutDetaching($genre->id);
+            // $movie->genres()->attach($genre->id);
+
+        }//end of for each
+
+    }// end of attachGenres
+
+    private function attachActors(Movie $movie)
+    {
+        $response = Http::get(config('services.tmdb.base_url') . '/movie/' . $movie->e_id . '/credits?api_key=' . config('services.tmdb.api_key'));
+
+        foreach ($response->json()['cast'] as $index => $cast) {
+
+            if ($cast['known_for_department'] != 'Acting') continue;
+
+            if ($index == 12) break;
+
+            $actor = Actor::where('e_id', $cast['id'])->first();
+
+            if (!$actor) {
+
+                $actor = Actor::create([
+                    'e_id' => $cast['id'],
+                    'name' => $cast['name'],
+                    'image' => $cast['profile_path'],
+                ]);
+
+            }//end of if
+
+            $movie->actors()->syncWithoutDetaching($actor->id);
+
+        }//end of for each
+
+    }// end of attachActors
     public function handle()
     {
          return $this->getMovies();

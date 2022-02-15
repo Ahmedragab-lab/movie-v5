@@ -34,6 +34,7 @@
         <li class="sidebar-header">MAIN NAVIGATION</li>
         <li><a href="{{ route('genres.index') }}"><i class="fa fa-list"></i> Genres </a></li>
         <li><a href="{{ route('movies.index') }}"><i class="fa fa-film"></i> Movies </a></li>
+        <li><a href="{{ route('actors.index') }}"><i class="fa fa-address-card"></i> Actors </a></li>
 
 
 

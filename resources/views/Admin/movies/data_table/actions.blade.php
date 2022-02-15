@@ -8,6 +8,6 @@
         <button type="submit" class="btn btn-danger waves-effect waves-light btn-sm delete" >
             <i class="fa fa-trash"></i>Delete
         </button>
-        <button type="button" class="btn btn-info waves-effect waves-light btn-sm" id="confirm-btn-alert">Click me</button>
+        {{-- <button type="button" class="btn btn-info waves-effect waves-light btn-sm" id="confirm-btn-alert">Click me</button> --}}
     </form>
 {{-- @endif --}}

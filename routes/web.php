@@ -30,6 +30,9 @@ route::middleware(['auth'])->group(function(){
 
     route::resource('/movies',Admin\MovieController::class)->only(['index','destroy']);
     Route::get('/movies/data',[Admin\MovieController::class,'data'])->name('movies.data');
+
+    route::resource('/actors',Admin\ActorController::class)->only(['index','destroy']);
+    Route::get('/actors/data',[Admin\ActorController::class,'data'])->name('actors.data');
 });
 
 require __DIR__.'/auth.php';
