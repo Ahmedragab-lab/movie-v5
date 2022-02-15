@@ -30,8 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'tmdb' => [
-        'base_url' => env('TMDB_BASE_URL'),
-        'api_key'  => env('TMDB_API_KEY'),
+        'base_url'   => env('TMDB_BASE_URL'),
+        'api_key'    => env('TMDB_API_KEY'),
+        'max_pages'  => env('TMDB_MAX_PAGES'),
     ],
 
 ];

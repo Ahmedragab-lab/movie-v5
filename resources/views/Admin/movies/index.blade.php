@@ -39,7 +39,9 @@
                     <select name="genre_id" id="genre" class="form-control select2">
                         <option value=""> --- All section ---</option>
                         @foreach ($genres as $genre)
-                           <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                           <option value="{{ $genre->id }}" {{ $genre->id == request()->genre_id ? 'selected':''}}>
+                              {{ $genre->name }}
+                           </option>
                         @endforeach
                     </select>
                 </div>
@@ -99,8 +101,8 @@
 @endsection
 @push('js')
     <script>
-        // let genre = "{{ request()->genre_id }}";
-        let genre ;
+        let genre = "{{ request()->genre_id }}";
+        // let genre ;
 
 
         let moviesTable = $('#movies-table').DataTable({
@@ -120,7 +122,7 @@
             },
             columns: [
                 {data: 'poster', name: 'poster', searchable: false, sortable: false, width: '10%'},
-                {data: 'title', name: 'title', width: '15%'},
+                {data: 'title', name: 'title', width: '10%'},
                 {data: 'genres', name: 'genres', searchable: false},
                 {data: 'vote', name: 'vote', searchable: false},
                 {data: 'vote_count', name: 'vote_count', searchable: false},
@@ -128,7 +130,7 @@
                 // {data: 'favorite_by_users_count', name: 'favorite_by_users_count', searchable: false},
                 {data: 'actions', name: 'actions', searchable: false, sortable: false, width: '20%'},
             ],
-            // order: [[4, 'desc']],
+            order: [[4, 'desc']],
         });
 
         // $('#data-table-search').keyup(function () {

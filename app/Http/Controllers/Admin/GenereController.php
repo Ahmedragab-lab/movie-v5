@@ -27,12 +27,12 @@ class GenereController extends Controller
 
         return DataTables::of($genres)
             // ->addColumn('record_select', 'admin.genres.data_table.record_select')
-            // ->addColumn('related_movies', 'admin.genres.data_table.related_movies')
+            ->addColumn('related_movies', 'Admin.Genres.data_table.related_movies')
             ->editColumn('created_at', function (Genre $genre) {
                 return $genre->created_at->format('Y-m-d');
             })
             ->addColumn('actions', 'Admin.Genres.data_table.actions')
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions','related_movies'])
             // ->rawColumns(['record_select', 'related_movies', 'actions'])
             ->toJson();
 
@@ -97,8 +97,7 @@ class GenereController extends Controller
     {
        Genre::destroy($id);
     //    session()->flash('success', __('site.deleted_successfully'));
-    //    return response(__('Genre deleted successfully'));
-       return redirect()->route('genres.index');
+       return response(__('Genre deleted successfully'));
     }
     // public function destroy(Genre $genre)
     // {

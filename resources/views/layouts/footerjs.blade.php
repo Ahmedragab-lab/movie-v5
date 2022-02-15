@@ -11,6 +11,8 @@
  <!-- Custom scripts -->
  <script src="{{ asset('assets/js/app-script.js') }}"></script>
 
+
+
  <!--Data Tables js-->
  <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
  <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -39,4 +41,14 @@
 
      } );
    </script>
+
+  {{-- <script>
+    $(document).ready(function () {
+    });//end of document ready
+</script> --}}
 @stack('js')
+<!--Sweet Alerts -->
+<script src="{{ asset('assets/plugins/alerts-boxes/js/sweetalert.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/alerts-boxes/js/sweet-alert-script.js') }}"></script>
+
+

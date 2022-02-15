@@ -18,8 +18,8 @@ class CreateMoviesTable extends Migration
             $table->bigInteger('e_id');
             $table->string('title');
             $table->text('desc');
-            $table->string('poster');
-            $table->string('banner');
+            $table->string('poster')->nullable();
+            $table->string('banner')->nullable();
             $table->string('release_date');
             $table->double('vote',8,2);
             $table->integer('vote_count');

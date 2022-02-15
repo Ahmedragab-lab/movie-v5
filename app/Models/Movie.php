@@ -11,7 +11,9 @@ class Movie extends Model
     protected $guarded = [];
     // protected $appends = ['poster_path','banner_bath'];
     protected $appends = ['poster_path'];
-
+    // protected $casts = [
+    //     'release_date'=>'date',
+    // ];
     // attr
     public function getPosterPathAttribute(){
         return 'https://image.tmdb.org/t/p/w500/' . $this->poster;

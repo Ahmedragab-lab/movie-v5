@@ -34,22 +34,41 @@ class GetMovies extends Command
     }
 
     public function getMovies(){
-        $response = Http::get(config('services.tmdb.base_url') . '/movie/popular?api_key=' . config('services.tmdb.api_key'). '&page=2');
-        // dd($response->json());
-        foreach( $response->json()['results'] as $result){
-            $movie = Movie::create([
-                'e_id'          => $result['id'],
-                'title'         => $result['title'],
-                'desc'          => $result['overview'],
-                'poster'        => $result['poster_path'],
-                'banner'        => $result['backdrop_path'],
-                'release_date'  => $result['release_date'],
-                'vote'          => $result['vote_average'],
-                'vote_count'    => $result['vote_count'],
-            ]);
-            foreach( $result['genre_ids'] as $genreId ){
-                $genre = Genre::where('e_id',$genreId)->first();
-                $movie->genres()->attach($genre->id);
+
+        for($i =1 ; $i <= config('services.tmdb.max_pages') ; $i++ )
+        {
+            $response = Http::get(config('services.tmdb.base_url') . '/movie/popular?api_key=' . config('services.tmdb.api_key'). '&page=' . $i);
+            // dd($response->json());
+            foreach( $response->json()['results'] as $result){
+                $movie = Movie::where('e_id',$result['id'])->first();
+              if(!$movie){
+                $movie = Movie::create([
+                    'e_id'          => $result['id'],
+                    'title'         => $result['title'],
+                    'desc'          => $result['overview'],
+                    'poster'        => $result['poster_path'],
+                    'banner'        => $result['backdrop_path'],
+                    'release_date'  => $result['release_date'],
+                    'vote'          => $result['vote_average'],
+                    'vote_count'    => $result['vote_count'],
+                ]);
+              }else{
+                $movie->update([
+                    'e_id'          => $result['id'],
+                    'title'         => $result['title'],
+                    'desc'          => $result['overview'],
+                    'poster'        => $result['poster_path'],
+                    'banner'        => $result['backdrop_path'],
+                    'release_date'  => $result['release_date'],
+                    'vote'          => $result['vote_average'],
+                    'vote_count'    => $result['vote_count'],
+                ]);
+              }
+
+                foreach( $result['genre_ids'] as $genreId ){
+                    $genre = Genre::where('e_id',$genreId)->first();
+                    $movie->genres()->attach($genre->id);
+                }
             }
         }
     }
