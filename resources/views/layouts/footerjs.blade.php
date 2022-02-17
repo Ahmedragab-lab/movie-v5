@@ -51,4 +51,8 @@
 <script src="{{ asset('assets/plugins/alerts-boxes/js/sweetalert.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/alerts-boxes/js/sweet-alert-script.js') }}"></script>
 
+<script src="{{ asset('assets/plugins/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+{{--select 2--}}
+{{-- <script type="text/javascript" src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script> --}}
+
 

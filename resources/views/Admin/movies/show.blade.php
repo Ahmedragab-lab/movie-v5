@@ -117,5 +117,18 @@
 <!--End content-wrapper-->
 @endsection
 @push('js')
+    <script>
+        $(function () {
 
+            $('#movie-images').magnificPopup({
+                delegate: 'a', // the selector for gallery item
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+            });
+
+        });//end of document ready
+
+    </script>
 @endpush

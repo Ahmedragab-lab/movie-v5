@@ -27,5 +27,11 @@
 <!-- Sidebar CSS-->
 <link href="{{ asset('assets/css/sidebar-menu.css') }}" rel="stylesheet"/>
 <!-- Custom Style-->
+{{--magnific-popup--}}
+<link rel="stylesheet" href="{{ asset('assets/plugins/magnific-popup/magnific-popup.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2-bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2-bootstrap.min.css') }}"> --}}
+
 <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet"/>
 @yield('css')
