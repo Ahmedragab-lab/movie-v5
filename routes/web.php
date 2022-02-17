@@ -17,10 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
+
 route::middleware(['auth'])->group(function(){
+    route::get('/dashboard',[Admin\AdminController::class,'index'])->name('dashboard');
+    route::get('/dashboard/topcount',[Admin\AdminController::class,'topCount'])->name('topcount');
 
     // route::get('/genres/data',[Admin\GenereController::class,'index'])->name('genres.data');
     route::resource('/genres',Admin\GenereController::class)->only(['index','destroy']);
