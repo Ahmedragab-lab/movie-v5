@@ -6,7 +6,7 @@
             <i class="fa fa-trash"></i>Delete
         </button>
     </form>
-    <a href="{{ route('actors.index',['actor_id' => $id]) }}"  class="btn btn-success waves-effect waves-light btn-sm " >
+    <a href="{{ route('movies.index',['actor_id' => $id]) }}"  class="btn btn-success waves-effect waves-light btn-sm " >
         <i class="fa fa-info"></i> show Movie
     </a>
 {{-- @endif --}}

@@ -34,7 +34,7 @@ class GetMovies extends Command
         parent::__construct();
     }
 
-    public function getMovies(){
+    public function getPopularMovies(){
 
         for($i =1 ; $i <= config('services.tmdb.max_pages') ; $i++ )
         {
@@ -42,29 +42,6 @@ class GetMovies extends Command
             // dd($response->json());
             foreach( $response->json()['results'] as $result){
                 $movie = Movie::where('e_id',$result['id'])->first();
-                        // if(!$movie){
-                        //     $movie = Movie::create([
-                        //         'e_id'          => $result['id'],
-                        //         'title'         => $result['title'],
-                        //         'desc'          => $result['overview'],
-                        //         'poster'        => $result['poster_path'],
-                        //         'banner'        => $result['backdrop_path'],
-                        //         'release_date'  => $result['release_date'],
-                        //         'vote'          => $result['vote_average'],
-                        //         'vote_count'    => $result['vote_count'],
-                        //     ]);
-                        // }else{
-                        //     $movie->update([
-                        //         'e_id'          => $result['id'],
-                        //         'title'         => $result['title'],
-                        //         'desc'          => $result['overview'],
-                        //         'poster'        => $result['poster_path'],
-                        //         'banner'        => $result['backdrop_path'],
-                        //         'release_date'  => $result['release_date'],
-                        //         'vote'          => $result['vote_average'],
-                        //         'vote_count'    => $result['vote_count'],
-                        //     ]);
-                        // }
                         $movie = Movie::updateOrCreate(
                             [
                                 'e_id' => $result['id'],
@@ -74,16 +51,86 @@ class GetMovies extends Command
                                 'desc' => $result['overview'],
                                 'poster' => $result['poster_path'],
                                 'banner' => $result['backdrop_path'],
-                                // 'type' => 'upcoming',
+                                'type' => 'upcoming',
                                 'release_date' => $result['release_date'],
                                 'vote' => $result['vote_average'],
                                 'vote_count' => $result['vote_count'],
                             ]);
               $this->attachGenres($result, $movie);
               $this->attachActors($movie);
+              $this->getImages($movie);
             }
         }
     }
+    private function getNowPlayingMovies()
+    {
+        for ($i = 1; $i <= config('services.tmdb.max_pages'); $i++) {
+
+            $response = Http::get(config('services.tmdb.base_url') . '/movie/now_playing?region=us&api_key=' . config('services.tmdb.api_key') . '&page=' . $i);
+
+            foreach ($response->json()['results'] as $result) {
+
+                $movie = Movie::updateOrCreate(
+                    [
+                        'e_id' => $result['id'],
+                        'title' => $result['title'],
+                    ],
+                    [
+                        'desc' => $result['overview'],
+                        'poster' => $result['poster_path'],
+                        'banner' => $result['backdrop_path'],
+                        'type' => 'now_playing',
+                        'release_date' => $result['release_date'],
+                        'vote' => $result['vote_average'],
+                        'vote_count' => $result['vote_count'],
+                    ]);
+
+                $this->attachGenres($result, $movie);
+
+                $this->attachActors($movie);
+
+                $this->getImages($movie);
+
+            }//end of for each
+
+        }//end of for loop
+
+    }// end of getNowPlayingMovies
+
+    private function getUpcomingMovies()
+    {
+        for ($i = 1; $i <= config('services.tmdb.max_pages'); $i++) {
+
+            $response = Http::get(config('services.tmdb.base_url') . '/movie/upcoming?region=us&api_key=' . config('services.tmdb.api_key') . '&page=' . $i);
+
+            foreach ($response->json()['results'] as $result) {
+
+                $movie = Movie::updateOrCreate(
+                    [
+                        'e_id' => $result['id'],
+                        'title' => $result['title'],
+                    ],
+                    [
+                        'desc' => $result['overview'],
+                        'poster' => $result['poster_path'],
+                        'banner' => $result['backdrop_path'],
+                        'type' => 'upcoming',
+                        'release_date' => $result['release_date'],
+                        'vote' => $result['vote_average'],
+                        'vote_count' => $result['vote_count'],
+                    ]);
+
+                $this->attachGenres($result, $movie);
+
+                $this->attachActors($movie);
+
+                $this->getImages($movie);
+
+            }//end of for each
+
+        }//end of for loop
+
+    }// end of getUpcomingMovies
 
     private function attachGenres($result, Movie $movie)
     {
@@ -125,9 +172,31 @@ class GetMovies extends Command
         }//end of for each
 
     }// end of attachActors
+
+
+    public function getImages(Movie $movie)
+    {
+        $response = Http::get(config('services.tmdb.base_url') . '/movie/' . $movie->e_id . '/images?api_key=' . config('services.tmdb.api_key'));
+
+        $movie->images()->delete();
+
+        foreach ($response->json()['backdrops'] as $index => $im) {
+
+            if ($index == 8) break;
+
+            $movie->images()->create([
+                'image' => $im['file_path']
+            ]);
+
+        }//end of for each
+
+    }// end of getImages
+
     public function handle()
     {
-         return $this->getMovies();
+         $this->getPopularMovies();
+         $this->getNowPlayingMovies();
+         $this->getUpcomingMovies();
 
     }
 }

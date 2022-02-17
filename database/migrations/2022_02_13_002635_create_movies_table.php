@@ -20,6 +20,7 @@ class CreateMoviesTable extends Migration
             $table->text('desc');
             $table->string('poster')->nullable();
             $table->string('banner')->nullable();
+            $table->enum('type', ['upcoming', 'now_playing'])->nullable();
             $table->string('release_date');
             $table->double('vote',8,2);
             $table->integer('vote_count');

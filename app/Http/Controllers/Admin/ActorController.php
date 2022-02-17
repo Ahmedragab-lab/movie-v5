@@ -11,10 +11,24 @@ class ActorController extends Controller
 {
     public function index()
     {
-        // $movies = Movie::with('genres');
-        // $movies = Movie::orderByDesc('vote_count')->get();
-        // $movies = Movie::whenGenreId(request()->genre_id)->get();
-        // $genres = Genre::get();
+        if(request()->ajax()){
+        //   dd(request()->all());
+        $actors = Actor::where('name', 'like', '%' . request()->search . '%')
+                ->limit(10)
+                ->get();
+        $results = [];
+
+        $results[] = ['id' => '', 'text' => 'All Actors'];
+
+            foreach ($actors as $actor) {
+
+                $results[] = ['id' => $actor->id, 'text' => $actor->name];
+
+            }//end of for each
+
+            return json_encode($results);
+
+        }
         return view('Admin.actors.index');
     }
 

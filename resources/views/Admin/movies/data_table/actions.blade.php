@@ -1,4 +1,4 @@
-{{-- <a href="{{ route('admin.movies.show', $id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> @lang('site.show')</a> --}}
+<a href="{{ route('movies.show', $id) }}" class="btn btn-primary btn-sm" title="show"><i class="fa fa-eye"></i> Show</a>
 
 {{-- @if (auth()->user()->hasPermission('delete_movies')) --}}
     <form action="{{ route('movies.destroy', $id) }}" class="my-1 my-xl-0" method="post" style="display: inline-block;">

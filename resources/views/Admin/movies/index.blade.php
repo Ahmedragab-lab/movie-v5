@@ -46,7 +46,29 @@
                     </select>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <select  id="actor" class="form-control select2">
+                        <option value=""> --- All Actors ---</option>
+                        @foreach ($actors as $actor)
+                           <option value="{{ $actor->id }}" {{ $actor->id == request()->actor_id ? 'selected':''}}>
+                              {{ $actor->name }}
+                           </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                    <select id="type" class="form-control select2" required>
+                        <option value=""> --All Movie Type--</option>
+                        @foreach (['now_playing', 'upcoming'] as $type)
+                            <option value="{{ $type }}" {{ $type == request()->type ? 'selected' : '' }}> {{ $type }}</option>
+                        @endforeach
+                    </select>
+                </div>
+               </div>
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><i class="fa fa-film"></i> Movies List</div>
                     <div class="card-body">
@@ -102,7 +124,8 @@
 @push('js')
     <script>
         let genre = "{{ request()->genre_id }}";
-        // let genre ;
+        let actor = "{{ request()->actor_id }}";
+        let type = "{{ request()->type }}";
 
 
         let moviesTable = $('#movies-table').DataTable({
@@ -116,8 +139,8 @@
                 url: '{{ route('movies.data') }}',
                 data: function (d) {
                     d.genre_id = genre;
-                    // d.actor_id = actor;
-                    // d.type = type;
+                    d.actor_id = actor;
+                    d.type = type;
                 }
             },
             columns: [
@@ -141,5 +164,29 @@
             genre = this.value;
             moviesTable.ajax.reload();
         })
+        $('#actor').on('change', function () {
+            actor = this.value;
+            moviesTable.ajax.reload();
+        })
+        $('#type').on('change', function () {
+            type = this.value;
+            moviesTable.ajax.reload();
+        })
+        $('#actor').select2({
+            ajax: {
+                url: "{{ route('actors.index') }}",
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        search: params.term,
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        });
     </script>
 @endpush

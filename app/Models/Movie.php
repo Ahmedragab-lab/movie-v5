@@ -9,6 +9,10 @@ class Movie extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    // protected $fillable = [
+    //     'e_id', 'title', 'desc', 'poster', 'banner', 'release_date', 'vote',
+    //     'vote_count', 'type'
+    // ];
     // protected $appends = ['poster_path','banner_bath'];
     protected $appends = ['poster_path'];
     // protected $casts = [
@@ -32,6 +36,30 @@ class Movie extends Model
               });
          });
      }
+     public function scopeWhenActorId($query,$actorId){
+         return $query->when($actorId,function($q) use($actorId){
+              return $q->whereHas('actors',function($qu) use($actorId){
+                  return $qu->where('actors.id',$actorId);
+              });
+         });
+     }
+     public function scopeWhenType($query, $type)
+    {
+        return $query->when($type, function ($q) use ($type) {
+
+            if ($type == 'popular') {
+                return $q->where('type', null);
+            }
+            return $q->where('type', $type);
+        });
+    }// end of scopeWhenType
+
+    // public function scopeWhenSearch($query, $search)
+    // {
+    //     return $query->when($search, function ($q) use ($search) {
+    //         return $q->where('title', 'like', '%' . $search . '%');
+    //     });
+    // }// end of scopeWhenSearch
 
 
 
@@ -41,6 +69,9 @@ class Movie extends Model
     }
     public function actors(){
         return $this->belongsToMany(Actor::class,'movie_actor');
+    }
+    public function images(){
+        return $this->hasMany(Image::class);
     }
     // func
 }

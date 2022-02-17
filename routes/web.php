@@ -28,7 +28,9 @@ route::middleware(['auth'])->group(function(){
     // Route::get('/genres/data', 'Admin\GenereController@data')->name('genres.data');
 
 
+    // route::resource('/movies',Admin\MovieController::class);
     route::resource('/movies',Admin\MovieController::class)->only(['index','destroy']);
+    route::get('/movies/show/{id}',[Admin\MovieController::class,'show'])->name('movies.show');
     Route::get('/movies/data',[Admin\MovieController::class,'data'])->name('movies.data');
 
     route::resource('/actors',Admin\ActorController::class)->only(['index','destroy']);
