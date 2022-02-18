@@ -50,6 +50,10 @@
 <!--Sweet Alerts -->
 <script src="{{ asset('assets/plugins/alerts-boxes/js/sweetalert.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/alerts-boxes/js/sweet-alert-script.js') }}"></script>
+{{-- charts --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
+<script src="{{ asset('assets/plugins/apexcharts/apexcharts.js')}}"></script>
+<script src="{{ asset('assets/plugins/apexcharts/apex-custom-script.js')}}"></script>
 
 <script src="{{ asset('assets/plugins/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 {{--select 2--}}

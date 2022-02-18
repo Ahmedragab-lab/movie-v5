@@ -7,12 +7,27 @@ use App\Models\Actor;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $popularMovies = Movie::where('type', null)
+        ->limit(5)
+        ->orderBy('vote_count', 'desc')
+        ->get();
+
+    $nowPlayingMovies = Movie::where('type', 'now_playing')
+        ->limit(5)
+        ->orderBy('vote_count', 'desc')
+        ->get();
+
+    $upcomingMovies = Movie::where('type', 'upcoming')
+        ->limit(5)
+        ->orderBy('vote_count', 'desc')
+        ->get();
+        return view('dashboard', compact('popularMovies', 'upcomingMovies', 'nowPlayingMovies'));
     }
 
     public function topCount()
@@ -26,4 +41,22 @@ class AdminController extends Controller
             'actorsCount' => $actorsCount,
         ]);
     }
+
+
+    public function moviesChart()
+    {
+        $movie= Movie::whereYear('release_date', request()->year)
+            ->select(
+                '*',
+                DB::raw('MONTH(release_date) as month'),
+                DB::raw('YEAR(release_date) as year'),
+                // DB::raw('COUNT(id) as total_movies'),
+            )
+            // ->groupBy('month')
+            ->get();
+
+        return view('Admin._movies_chart', compact('movie'));
+        // dd($movie);
+
+    }// end of moviesChart
 }

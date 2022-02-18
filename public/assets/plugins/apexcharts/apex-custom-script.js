@@ -25,7 +25,7 @@ var options = {
                 },
             },
             stroke: {
-                width: 4,   
+                width: 4,
                 curve: 'smooth',
             },
             series: [{
@@ -65,7 +65,7 @@ var options = {
             document.querySelector("#chart1"),
             options
         );
-        
+
         chart.render();
 
 
@@ -96,7 +96,7 @@ var options = {
                 enabled: false
             },
             stroke: {
-                width: 4,   
+                width: 4,
                 curve: 'smooth',
             },
             series: [{
@@ -136,7 +136,7 @@ var options = {
             document.querySelector("#chart2"),
             options
         );
-        
+
         chart.render();
 
 
@@ -156,7 +156,7 @@ var options = {
                 bar: {
                     horizontal: false,
                     columnWidth: '45%',
-                    endingShape: 'rounded'  
+                    endingShape: 'rounded'
                 },
             },
             dataLabels: {
@@ -171,16 +171,19 @@ var options = {
                 show: true,
                 borderColor: 'rgba(255, 255, 255, 0.12)',
             },
-            series: [{
-                name: 'Net Profit',
-                data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-            }, {
-                name: 'Revenue',
-                data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-            }, {
-                name: 'Free Cash Flow',
-                data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-            }],
+            series: [
+                {
+                    name: 'Net Profit',
+                    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                },
+                // {
+                //     name: 'Revenue',
+                //     data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                // }, {
+                //     name: 'Free Cash Flow',
+                //     data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                // }
+            ],
             xaxis: {
                 categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
             },
@@ -229,7 +232,7 @@ var options = {
         chart.render();
 
 
-   
+
    // chart 4
 
         var options = {
@@ -273,7 +276,7 @@ var options = {
         );
 
         chart.render();
-      
+
 
         // chart 5
 
@@ -313,11 +316,11 @@ var options = {
         );
 
         chart.render();
-        
-       
+
+
 
         // chart 6
-		
+
 		var options = {
             chart: {
                 height: 350,
@@ -374,10 +377,10 @@ var options = {
 
         chart.render();
 
-		
-      
+
+
 	  // chart 7
-	  
+
 	  var options = {
             chart: {
                 height: 380,
@@ -408,7 +411,7 @@ var options = {
                       },
                     dataLabels: {
                         name: {
-							
+
                             fontSize: '22px',
                         },
                         value: {
@@ -430,21 +433,21 @@ var options = {
 			colors: ["#fff", "rgba(255, 255, 255, 0.60)", "rgba(255, 255, 255, 0.40)", 'rgba(255, 255, 255, 0.20)'],
             series: [44, 55, 67, 83],
             labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
-            
+
         }
 
        var chart = new ApexCharts(
             document.querySelector("#chart7"),
             options
         );
-        
+
         chart.render();
 
-		
-		
-		
+
+
+
 	 // chart 8
-	 
+
 	 var options = {
       chart: {
         height: 380,
@@ -533,12 +536,12 @@ var options = {
       options
     );
 
-    chart.render();	
-		
-		
-		
-     
-    // chart 9 
+    chart.render();
+
+
+
+
+    // chart 9
 
     var options = {
             chart: {
@@ -635,15 +638,15 @@ var options = {
          }, colors: ["#fff"],
             series: [87],
             labels: ['Median Ratio'],
-            
+
         }
 
        var chart = new ApexCharts(
             document.querySelector("#chart9"),
             options
         );
-        
-        chart.render();	 
+
+        chart.render();
 
 
 
@@ -651,4 +654,4 @@ var options = {
 
 
 
-     });	
+     });
